@@ -31,6 +31,7 @@ const Navbar = () => {
         className={`bg-gray-900/90 text-white transition-all duration-300 ease-in-out ${
           isOpen ? "w-64" : "w-16"
         }`}
+        // condition : true: false
       >
         <div className="flex items-center justify-between px-4 py-4">
           {isOpen && <h1 className="text-3xl font-semibold">EnergiNet</h1>}
