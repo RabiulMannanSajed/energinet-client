@@ -1,12 +1,39 @@
-# React + Vite
+⚡ EnergiNet – Smart Solar Energy Management & Trading Platform
+EnergiNet is a web-based platform that empowers users to monitor, manage, forecast, and trade solar energy in real time.
+It combines AI forecasting, blockchain-powered P2P trading, secure payments, and IoT integration to make solar energy management seamless and transparent.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🚀 Key Features
+🧠 AI-Based Forecasting
 
-Currently, two official plugins are available:
+Uses a Gaussian Process Regression (GPR) machine learning model to predict solar energy production and consumption.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Helps users know when they’ll have surplus energy to sell or when they may need to buy more.
 
-## Expanding the ESLint configuration
+🔗 Blockchain Energy Trading
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Implements Ethereum / BNB Chain smart contracts for secure peer-to-peer (P2P) energy trading.
+
+No intermediaries — users trade directly using tokens.
+
+📱 Payment Integration
+
+Integrated with Bkash, Nagad, Rocket, and other local mobile finance services.
+
+Enables instant payments between users after trades.
+
+📊 Real-Time Monitoring
+
+Connects to IoT smart meters to track energy production and consumption live.
+
+Data is displayed in an intuitive dashboard.
+
+🎓 Educational Module
+
+Offers a learning portal with Bangla and English tutorials.
+
+Covers solar basics, trading guides, and platform usage in a simple, gamified format.
+
+🔒 Security & Encryption
+All sensitive data is encrypted using Node.js crypto module before storage or transmission.
+
+Ensures privacy and secure handling of user data.
