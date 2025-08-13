@@ -12,10 +12,6 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="/" element={<Navbar />}>
           <Route index element={<Home />} />
-          {/* <Route path="addStudent" element={<AddStudents />} />
-          <Route path="attendance" element={<Attenndance />} />
-          <Route path="updateAttendance" element={<UpdatedAttendance />} />
-          <Route path="payment" element={<Payment />} /> */}
         </Route>
       </Routes>
     </>
@@ -23,22 +19,3 @@ function App() {
 }
 
 export default App;
-
-// ! use this conditional Rendering  to render the components based on the login state
-
-//* if the user is logged in, render the sidebar and its routes
-
-// <Routes>
-//     {isLoggedIn ? (
-//       <Route path="/" element={<Sidebar />}>
-//         <Route index element={<HomeDashBoard />} />
-//         <Route path="students" element={<Studetns />} />
-//         <Route path="addStudent" element={<AddStudents />} />
-//         <Route path="attendance" element={<Attenndance />} />
-//         <Route path="updateAttendance" element={<UpdatedAttendance />} />
-//         <Route path="payment" element={<Payment />} />
-//       </Route>
-//     ) : (
-//       <Route path="/" element={<Login />} />
-//     )}
-//   </Routes>

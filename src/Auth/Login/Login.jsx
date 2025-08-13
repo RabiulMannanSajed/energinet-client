@@ -9,15 +9,17 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     console.log("Form data:", data);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/enerdinet/auth/login",
+        "http://localhost:5000/api/v1/energinet/auth/login",
         data
       );
+      console.log(response);
       localStorage.setItem("email", response.data.user.email);
       localStorage.setItem("role", response.data.user.role);
 
@@ -27,7 +29,7 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       console.error("Signup error:", error.response?.data || error.message);
-      alert("Signup failed!");
+      alert("Login failed!");
     }
   };
   return (
