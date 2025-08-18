@@ -24,6 +24,11 @@ const Login = () => {
       localStorage.setItem("role", response.data.user.role);
 
       alert("Login successful!");
+      // if (response.data.user.role === "admin") {
+      //   navigate("/adminHome");
+      // } else {
+      //   navigate("/navbar");
+      // }
 
       // ✅ Redirect to homepage
       navigate("/");
