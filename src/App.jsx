@@ -6,6 +6,7 @@ import Login from "./Auth/Login/Login";
 import AdminDashboard from "./Pages/AdminPages/AdminDashboard/AdminDashboard/AdminDashboard";
 import AdminNavbar from "./Shared/AdminNavbar/AdminNavbar";
 import CourseHome from "./Pages/AdminPages/Courses/Coursehome/CourseHome";
+import CoursesUpload from "./Pages/AdminPages/Courses/CoursesUpload/CoursesUpload";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/adminNavbar" element={<AdminNavbar />}>
           <Route index element={<AdminDashboard />} />
           <Route path="course" element={<CourseHome />} />
+          <Route path="courseUpload" element={<CoursesUpload />} />
         </Route>
       </Routes>
     </>
