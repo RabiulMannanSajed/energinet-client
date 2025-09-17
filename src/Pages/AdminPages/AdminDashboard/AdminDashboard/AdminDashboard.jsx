@@ -1,12 +1,14 @@
 import React from "react";
 import AdminDashboardUsers from "../AdminDashboardUsers/AdminDashboardUsers";
+import TradeEng from "../TradeEng/TradeEng";
 
 const AdminDashboard = () => {
-  //  here call cll component
   return (
-    <div className="text-white">
-      <h1>this admin home</h1>
-      <AdminDashboardUsers />
+    <div className="text-white ">
+      <div className="flex justify-around">
+        <AdminDashboardUsers />
+        <TradeEng />
+      </div>
     </div>
   );
 };

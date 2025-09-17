@@ -17,13 +17,14 @@ const Navbar = () => {
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const navItems = [
-    { name: "Dashboard", path: "/", icon: <Home size={28} /> },
-    { name: "Trades", path: "/trades", icon: <BarChart3 size={28} /> },
+    { name: "Dashboard", path: "/navbar", icon: <Home size={28} /> },
+    { name: "Trades", path: "/navbar/trades", icon: <BarChart3 size={28} /> },
     { name: "Forecast", path: "/forecast", icon: <LineChart size={28} /> },
-    { name: "Learn", path: "/learn", icon: <BookOpen size={28} /> },
+    { name: "Learn", path: "/navbar/learn", icon: <BookOpen size={28} /> },
     { name: "Profile", path: "/profile", icon: <User size={28} /> },
     { name: "Notification", path: "/notification", icon: <Bell size={28} /> },
   ];
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}

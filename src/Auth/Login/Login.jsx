@@ -1,5 +1,4 @@
 import axios from "axios";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -24,14 +23,9 @@ const Login = () => {
       localStorage.setItem("role", response.data.user.role);
 
       alert("Login successful!");
-      // if (response.data.user.role === "admin") {
-      //   navigate("/adminHome");
-      // } else {
-      //   navigate("/navbar");
-      // }
 
       // ✅ Redirect to homepage
-      navigate("/");
+      navigate("/adminNavbar");
     } catch (error) {
       console.error("Signup error:", error.response?.data || error.message);
       alert("Login failed!");

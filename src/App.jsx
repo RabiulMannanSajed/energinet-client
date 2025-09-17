@@ -7,6 +7,9 @@ import AdminDashboard from "./Pages/AdminPages/AdminDashboard/AdminDashboard/Adm
 import AdminNavbar from "./Shared/AdminNavbar/AdminNavbar";
 import CourseHome from "./Pages/AdminPages/Courses/Coursehome/CourseHome";
 import CoursesUpload from "./Pages/AdminPages/Courses/CoursesUpload/CoursesUpload";
+import LearnHome from "./Pages/Home/Learn/LearnHome/LearnHome";
+import UserActiveits from "./Pages/AdminPages/AdminDashboard/userActiveits/UserActiveits";
+import DeletedCourses from "./Pages/AdminPages/Courses/DeletedCourses/DeletedCourses";
 
 function App() {
   return (
@@ -18,12 +21,15 @@ function App() {
         {/*  this is for the user  */}
         <Route path="/navbar" element={<Navbar />}>
           <Route index element={<Home />} />
+          <Route path="learn" element={<LearnHome />} />
         </Route>
         {/*  this is for admin  */}
         <Route path="/adminNavbar" element={<AdminNavbar />}>
           <Route index element={<AdminDashboard />} />
           <Route path="course" element={<CourseHome />} />
           <Route path="courseUpload" element={<CoursesUpload />} />
+          <Route path="deletedCourses" element={<DeletedCourses />} />
+          <Route path="userActivity" element={<UserActiveits />} />
         </Route>
       </Routes>
     </>

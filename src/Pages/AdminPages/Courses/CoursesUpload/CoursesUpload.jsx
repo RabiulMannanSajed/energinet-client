@@ -113,7 +113,7 @@ const CoursesUpload = () => {
               type="file"
               {...register("coursesImage", { required: true })}
               onChange={handleImageChange}
-              className=""
+              className="text-white"
             />
             {errors.coursesImage && (
               <p className="text-red-500 text-sm">Course image is required</p>
@@ -123,7 +123,7 @@ const CoursesUpload = () => {
               <img
                 src={preview}
                 alt="Preview"
-                className="w-40 h-40 object-cover rounded-lg"
+                className="w-40 h-40 object-cover rounded-lg "
               />
             )}
           </div>
@@ -131,7 +131,7 @@ const CoursesUpload = () => {
           <input
             placeholder="Course Title"
             {...register("coursesTitle", { required: true })}
-            className="w-full p-2 border rounded text-black"
+            className="w-full p-2 border rounded text-white"
           />
         </div>
 
@@ -140,13 +140,13 @@ const CoursesUpload = () => {
             type="number"
             placeholder="Course Price"
             {...register("coursePrice", { required: true })}
-            className="w-full p-2 border rounded text-black"
+            className="w-full p-2 border rounded text-white"
           />
 
           <textarea
             placeholder="Course Detail"
             {...register("courseDetail", { required: true })}
-            className="w-full p-2 border rounded text-black"
+            className="w-full p-2 border rounded text-white"
           />
         </div>
 
@@ -168,14 +168,14 @@ const CoursesUpload = () => {
                   {...register(`chapters.${index}.courseChapterName`, {
                     required: true,
                   })}
-                  className="w-full p-2 border rounded mb-2 text-black"
+                  className="w-full p-2 border rounded mb-2 text-white"
                 />
                 <input
                   placeholder="Chapter Number"
                   {...register(`chapters.${index}.courseChapter`, {
                     required: true,
                   })}
-                  className="w-full p-2 border rounded mb-2 text-black"
+                  className="w-full p-2 border rounded mb-2 text-white"
                 />
               </div>
               <textarea
@@ -183,14 +183,14 @@ const CoursesUpload = () => {
                 {...register(`chapters.${index}.courseDetails`, {
                   required: true,
                 })}
-                className="w-full p-2 border rounded mb-2 text-black"
+                className="w-full p-2 border rounded mb-2 text-white"
               />
               <input
                 placeholder="Chapter Link"
                 {...register(`chapters.${index}.courseLink`, {
                   required: true,
                 })}
-                className="w-full p-2 border rounded mb-2 text-black"
+                className="w-full p-2 border rounded mb-2 text-white"
               />
             </div>
           ))}

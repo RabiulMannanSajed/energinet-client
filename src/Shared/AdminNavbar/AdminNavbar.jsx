@@ -1,14 +1,5 @@
 import { useState } from "react";
-import {
-  Menu,
-  X,
-  Home,
-  BarChart3,
-  LineChart,
-  BookOpen,
-  User,
-  Bell,
-} from "lucide-react";
+import { Menu, X, Home, BarChart3 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 
 const AdminNavbar = () => {
@@ -17,10 +8,20 @@ const AdminNavbar = () => {
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const navItems = [
-    { name: "Admin Dashboard", path: "/", icon: <Home size={28} /> },
+    { name: "Admin Dashboard", path: "/adminNavbar", icon: <Home size={28} /> },
     {
       name: "Courses",
       path: "/adminNavbar/course",
+      icon: <BarChart3 size={28} />,
+    },
+    {
+      name: "Deleted Courses",
+      path: "/adminNavbar/deletedCourses",
+      icon: <BarChart3 size={28} />,
+    },
+    {
+      name: "User Activity",
+      path: "/adminNavbar/userActivity",
       icon: <BarChart3 size={28} />,
     },
   ];
