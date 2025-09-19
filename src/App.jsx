@@ -10,6 +10,7 @@ import CoursesUpload from "./Pages/AdminPages/Courses/CoursesUpload/CoursesUploa
 import LearnHome from "./Pages/Home/Learn/LearnHome/LearnHome";
 import UserActiveits from "./Pages/AdminPages/AdminDashboard/userActiveits/UserActiveits";
 import DeletedCourses from "./Pages/AdminPages/Courses/DeletedCourses/DeletedCourses";
+import Profile from "./Pages/Home/Profile/Profile";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
         <Route path="/navbar" element={<Navbar />}>
           <Route index element={<Home />} />
           <Route path="learn" element={<LearnHome />} />
-          <Route path="/navbar/profile" element={<LearnHome />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
         {/*  this is for admin  */}
         <Route path="/adminNavbar" element={<AdminNavbar />}>
