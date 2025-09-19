@@ -68,8 +68,8 @@ const Profile = () => {
                 flex-5/12
                 justify-between items-center"
         >
-          <p>Profile SetUp</p>
-          <p>wallet Setup</p>
+          <p className="text-3xl">Profile SetUp</p>
+          <p className="text-xl">wallet Setup</p>
           <p>Bkash</p>
           <p>Nogad</p>
         </div>
@@ -87,7 +87,7 @@ const Profile = () => {
                 flex-1/12
                 justify-between items-center"
         >
-          <p>Preferences</p>
+          <p className="text-3xl">Preferences</p>
         </div>
       </div>
     </div>
