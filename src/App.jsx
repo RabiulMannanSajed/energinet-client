@@ -22,6 +22,7 @@ function App() {
         <Route path="/navbar" element={<Navbar />}>
           <Route index element={<Home />} />
           <Route path="learn" element={<LearnHome />} />
+          <Route path="/navbar/profile" element={<LearnHome />} />
         </Route>
         {/*  this is for admin  */}
         <Route path="/adminNavbar" element={<AdminNavbar />}>

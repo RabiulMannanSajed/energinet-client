@@ -10,8 +10,6 @@ const DeletedCourses = () => {
     ? deletedCourses.data.filter((course) => course.isDeleted)
     : [];
 
-  console.log("Deleted courses:", deletedCoursesFind);
-
   const handleRestore = async (id) => {
     try {
       setLoading(true);
@@ -21,8 +19,7 @@ const DeletedCourses = () => {
       alert("Course restored successfully!");
       refetch(); // refresh data after restore
     } catch (error) {
-      console.error("Restore failed:", error);
-      alert("Failed to restore course");
+      alert("Failed to restore course", error);
     } finally {
       setLoading(false);
     }
