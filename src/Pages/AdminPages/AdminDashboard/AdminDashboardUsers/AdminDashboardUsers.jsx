@@ -23,12 +23,11 @@ const AdminDashboardUsers = () => {
                 shadow-lg
                 p-8
                 text-white
-                space-y-6
-                z-10
-                flex
-                justify-between items-center"
+                z-10"
     >
-      <h2>Total Users: {totalUsers}</h2>
+      <h2>Active User </h2>
+      <br />
+      <p className="text-2xl text-center">{totalUsers}</p>
     </div>
   );
 };

@@ -60,9 +60,10 @@ const LearnCourses = () => {
           />
 
           {/* Course Info */}
-          <h2 className="text-lg font-bold mt-2">{course.coursesTitle}</h2>
-          <p className="text-gray-600">Price: ${course.coursePrice}</p>
-          <p className="text-sm text-gray-700 mt-1 line-clamp-3">
+          <h2 className="text-lg font-bold mt-2 text-white">
+            {course.coursesTitle}
+          </h2>
+          <p className="text-sm  mt-1 line-clamp-3 text-white">
             {course.courseDetail}
           </p>
 
@@ -100,10 +101,10 @@ const LearnCourses = () => {
             <h2 className="text-xl font-bold mb-4">
               {selectedCourse.coursesTitle}
             </h2>
-            <p className="mb-2 font-medium">
+            <p className="mb-2 font-medium text-white">
               {selectedCourse.chapters[currentChapterIndex].courseChapterName}
             </p>
-            <p className="text-white mb-4">
+            <p className="text-white mb-4 ">
               {selectedCourse.chapters[currentChapterIndex].courseDetails}
             </p>
 

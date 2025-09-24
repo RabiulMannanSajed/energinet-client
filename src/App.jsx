@@ -11,6 +11,9 @@ import LearnHome from "./Pages/Home/Learn/LearnHome/LearnHome";
 import UserActiveits from "./Pages/AdminPages/AdminDashboard/userActiveits/UserActiveits";
 import DeletedCourses from "./Pages/AdminPages/Courses/DeletedCourses/DeletedCourses";
 import Profile from "./Pages/Home/Profile/Profile";
+import TradeMarketPlace from "./Pages/Home/TradeMarketPlace/TradeMarketPlace";
+import MakeTradeOffer from "./Pages/Home/MakeTradeOffer/MakeTradeOffer";
+import Payment from "./Pages/Home/Payment/Payment";
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
           <Route index element={<Home />} />
           <Route path="learn" element={<LearnHome />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="trades" element={<TradeMarketPlace />} />
+          <Route path="tradeEnergy" element={<MakeTradeOffer />} />
+          <Route path="payment" element={<Payment />} />
         </Route>
         {/*  this is for admin  */}
         <Route path="/adminNavbar" element={<AdminNavbar />}>

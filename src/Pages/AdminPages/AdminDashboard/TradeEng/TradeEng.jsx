@@ -1,5 +1,3 @@
-import React from "react";
-
 const TradeEng = () => {
   return (
     <div
@@ -15,8 +13,8 @@ const TradeEng = () => {
                 z-10
            "
     >
-      <h2>Total Energy Treaded Today</h2> <br />
-      <p>500 khw</p>
+      <h2 className="text-xl">Total Energy Treaded Today</h2> <br />
+      <p className="text-2xl">500 khw</p>
     </div>
   );
 };
