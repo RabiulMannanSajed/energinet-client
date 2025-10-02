@@ -14,6 +14,7 @@ const TradeMarketPlace = () => {
     navigate("/navbar/payment", { state: trade });
   };
   refetch();
+
   return (
     <div className="text-white">
       <div className="flex justify-between items-center">
@@ -57,12 +58,22 @@ const TradeMarketPlace = () => {
                     {new Date(trade.createdAt).toLocaleString()}
                   </td>
                   <td className="p-2 border border-gray-600">
-                    <button
-                      onClick={() => handlePayment(trade)}
-                      className="bg-green-500 px-3 py-1 rounded hover:bg-green-600"
-                    >
-                      Proceed to Payment
-                    </button>
+                    {trade.status === "pending" ? (
+                      <button
+                        onClick={() => handlePayment(trade)}
+                        className="bg-green-500 px-3 py-1 rounded hover:bg-green-600"
+                      >
+                        Proceed to Payment
+                      </button>
+                    ) : trade.status === "SUCCESS" ? (
+                      <span className="text-green-400 font-semibold">
+                        Sold Out
+                      </span>
+                    ) : (
+                      <span className="text-red-400 font-semibold">
+                        Sold Out
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))

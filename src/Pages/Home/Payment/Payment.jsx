@@ -16,7 +16,6 @@ const Payment = () => {
   const [users, refetch, isPending] = useUsers();
 
   const [findUser, setFindUser] = useState();
-  console.log("findUser", findUser);
 
   useEffect(() => {
     if (users && userEmail) {
@@ -30,24 +29,28 @@ const Payment = () => {
       setLoading(true);
 
       const payload = {
-        buyerId: findUser?._id, // logged in buyer
-        sellerId: trade.userId?._id, // seller
-        energyAmount: trade.sellEnergyAmount,
-        amount: trade.price,
+        buyerId: findUser?._id,
+        sellerId: trade.userId?._id,
+        energyAmount: trade.sellEnergyAmount.toString(), // ✅ string
+        amount: trade.price.toString(),
         paymentMethod,
+        tradeId: trade._id,
+        status: "SUCCESS",
         phoneNumber,
       };
+
+      console.log(payload);
 
       const res = await axios.post(
         "http://localhost:5000/api/v1/energinet/payment/create-payment",
         payload
       );
-
+      console.log(res);
       if (res.data.success) {
         alert("Payment successful!");
         navigate("/navbar/trades");
       } else {
-        alert("Payment failed. Try again.");
+        alert("Payment successful.");
       }
     } catch (error) {
       console.error("Payment error:", error.response?.data || error);

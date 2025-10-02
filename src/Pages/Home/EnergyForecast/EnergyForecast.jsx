@@ -4,11 +4,6 @@ const EnergyForecast = () => {
   const production = [0, 2, 3, 4, 5, 6];
   const usage = [6, 12, 6];
 
-  // For demonstration, combine them as chat messages
-  // Let's say production messages come from "Producer"
-  // and usage messages come from "User"
-
-  // We'll pair them by index up to max length
   const maxLen = Math.max(production.length, usage.length);
   const chatMessages = [];
 
@@ -40,7 +35,7 @@ const EnergyForecast = () => {
       >
         <div className="flex items-center justify-between font-medium text-2xl">
           <p>Energy Forecast</p>
-          <p>Next 24 hr</p>
+          <p>Next 7 days </p>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
-import React from "react";
 import Overview from "./Overview/Overview";
 import EnergyForecast from "./EnergyForecast/EnergyForecast";
 import GridConnection from "./GridConnection/GridConnection";
+import ForecastChart from "./Forcast/ForecastChart";
 
 const Home = () => {
   return (
@@ -11,6 +11,7 @@ const Home = () => {
         <div className="flex-1 space-y-6">
           <Overview />
           <EnergyForecast />
+          <ForecastChart></ForecastChart>
         </div>
         <div className="w-[30%]">
           <GridConnection />
