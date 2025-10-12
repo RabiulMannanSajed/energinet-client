@@ -18,14 +18,20 @@ const Login = () => {
         "http://localhost:5000/api/v1/energinet/auth/login",
         data
       );
-      console.log(response);
+      console.log(response.data.user);
+      const user = response.data.user;
       localStorage.setItem("email", response.data.user.email);
       localStorage.setItem("role", response.data.user.role);
 
       alert("Login successful!");
-
-      // ✅ Redirect to homepage
-      navigate("/adminNavbar");
+      if (user.role === "admin") {
+        navigate("/adminNavbar");
+      } else if (user.role === "user") {
+        navigate("/navbar");
+      } else {
+        // Optional: handle unexpected roles
+        alert("Invalid role. Please contact support.");
+      }
     } catch (error) {
       console.error("Signup error:", error.response?.data || error.message);
       alert("Login failed!");

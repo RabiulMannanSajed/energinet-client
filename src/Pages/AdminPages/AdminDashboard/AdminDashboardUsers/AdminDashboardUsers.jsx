@@ -4,7 +4,7 @@ import { useUser } from "../../../../CustomProviders/useContext";
 
 const AdminDashboardUsers = () => {
   //  here we will shoe all users not admin
-  const [users, refetch, isPending] = useUsers();
+  const [users] = useUsers();
 
   const { userEmail } = useUser();
   const normalUsers = users?.filter((user) => user.role !== "admin") || [];
@@ -25,9 +25,9 @@ const AdminDashboardUsers = () => {
                 text-white
                 z-10"
     >
-      <h2>Active User </h2>
+      <h2 className="text-xl">Active User </h2>
       <br />
-      <p className="text-2xl text-center">{totalUsers}</p>
+      <p className="text-2xl ">{totalUsers}</p>
     </div>
   );
 };

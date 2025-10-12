@@ -1,7 +1,19 @@
+import useTrade from "../../../../hooks/useTrade";
+
 const TradeEng = () => {
+  const [treads] = useTrade();
+  const totalSoldEnergy =
+    treads
+      ?.filter((trade) => trade.status === "sold")
+      ?.reduce((acc, trade) => acc + trade.price, 0) || 0;
+
+  // ✅ Total Produced Energy (all trades)
+  const totalProducedEnergy =
+    treads?.reduce((acc, trade) => acc + trade.sellEnergyAmount, 0) || 0;
   return (
-    <div
-      className="
+    <div className="flex  gap-4">
+      <div
+        className="
                 bg-white/5
                 backdrop-blur-md
                 border
@@ -12,9 +24,26 @@ const TradeEng = () => {
                 text-white
                 z-10
            "
-    >
-      <h2 className="text-xl">Total Energy Treaded Today</h2> <br />
-      <p className="text-2xl">500 khw</p>
+      >
+        <h2 className="text-xl">Total Energy Produce</h2> <br />
+        <p className="text-2xl">{totalProducedEnergy}</p>
+      </div>
+      <div
+        className="
+                bg-white/5
+                backdrop-blur-md
+                border
+                border-white/20
+                rounded-2xl
+                shadow-lg
+                p-8
+                text-white
+                z-10
+           "
+      >
+        <h2 className="text-xl">Total Energy Treaded Today</h2> <br />
+        <p className="text-2xl">{totalSoldEnergy}</p>
+      </div>
     </div>
   );
 };

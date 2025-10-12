@@ -2,6 +2,7 @@ import Overview from "./Overview/Overview";
 import EnergyForecast from "./EnergyForecast/EnergyForecast";
 import GridConnection from "./GridConnection/GridConnection";
 import ForecastChart from "./Forcast/ForecastChart";
+import WalletBalance from "./WalletBalance/WalletBalance";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
         </div>
         <div className="w-[30%]">
           <GridConnection />
+          <WalletBalance />
         </div>
       </div>
     </div>
