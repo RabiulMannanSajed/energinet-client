@@ -110,3 +110,140 @@ export default function ForecastChart() {
     </div>
   );
 }
+
+// import React, { useEffect, useState } from "react";
+// import {
+//   LineChart,
+//   Line,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   Legend,
+//   ResponsiveContainer,
+// } from "recharts";
+
+// // Example data (replace this with your API data)
+// const rawData = [
+//   {
+//     status: "pending",
+//     sellEnergyAmount: 10,
+//     createdAt: "2025-09-20T10:51:33.215Z",
+//   },
+//   {
+//     status: "sold",
+//     sellEnergyAmount: 15,
+//     createdAt: "2025-09-24T12:19:24.627Z",
+//   },
+//   {
+//     status: "pending",
+//     sellEnergyAmount: 12,
+//     createdAt: "2025-09-24T12:20:23.531Z",
+//   },
+//   {
+//     status: "pending",
+//     sellEnergyAmount: 12,
+//     createdAt: "2025-09-24T12:21:05.085Z",
+//   },
+//   {
+//     status: "pending",
+//     sellEnergyAmount: 25,
+//     createdAt: "2025-09-28T05:20:51.150Z",
+//   },
+//   {
+//     status: "pending",
+//     sellEnergyAmount: 10,
+//     createdAt: "2025-09-28T05:21:18.170Z",
+//   },
+//   {
+//     status: "pending",
+//     sellEnergyAmount: 20,
+//     createdAt: "2025-09-28T05:21:56.760Z",
+//   },
+//   {
+//     status: "sold",
+//     sellEnergyAmount: 15,
+//     createdAt: "2025-10-14T06:27:51.582Z",
+//   },
+// ];
+
+// const ForecastChart = () => {
+//   const [chartData, setChartData] = useState([]);
+
+//   useEffect(() => {
+//     // Sort data by date
+//     const sorted = rawData
+//       .map((item) => ({
+//         date: new Date(item.createdAt).toISOString().split("T")[0],
+//         energy: item.sellEnergyAmount,
+//       }))
+//       .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+//     // --- Simple Trend Forecast (Linear Projection) ---
+//     const n = sorted.length;
+//     const avgEnergy = sorted.reduce((sum, d) => sum + d.energy, 0) / n;
+//     const avgIndex = (n - 1) / 2;
+
+//     // linear slope
+//     const slope =
+//       sorted.reduce(
+//         (sum, d, i) => sum + (i - avgIndex) * (d.energy - avgEnergy),
+//         0
+//       ) / sorted.reduce((sum, _, i) => sum + (i - avgIndex) ** 2, 0);
+
+//     // Predict next 5 days
+//     const lastDate = new Date(sorted[sorted.length - 1].date);
+//     const forecast = [];
+//     for (let i = 1; i <= 5; i++) {
+//       const nextDate = new Date(lastDate);
+//       nextDate.setDate(lastDate.getDate() + i);
+//       const nextEnergy = avgEnergy + slope * (n - 1 + i - avgIndex);
+//       forecast.push({
+//         date: nextDate.toISOString().split("T")[0],
+//         forecast: parseFloat(nextEnergy.toFixed(2)),
+//       });
+//     }
+
+//     // Combine actual + forecast
+//     const combined = sorted.map((d) => ({
+//       ...d,
+//       forecast: null,
+//     }));
+
+//     setChartData([...combined, ...forecast]);
+//   }, []);
+
+//   return (
+//     <div className="p-4 bg-white shadow-md rounded-2xl">
+//       <h2 className="text-xl font-semibold mb-4 text-center text-black">
+//         ⚡ Sell Energy Forecast (AI Trend)
+//       </h2>
+//       <ResponsiveContainer width="100%" height={400}>
+//         <LineChart data={chartData}>
+//           <CartesianGrid strokeDasharray="3 3" />
+//           <XAxis dataKey="date" />
+//           <YAxis />
+//           <Tooltip />
+//           <Legend />
+//           <Line
+//             type="monotone"
+//             dataKey="energy"
+//             stroke="#8884d8"
+//             name="Actual"
+//             strokeWidth={2}
+//           />
+//           <Line
+//             type="monotone"
+//             dataKey="forecast"
+//             stroke="#82ca9d"
+//             name="Forecast"
+//             strokeDasharray="5 5"
+//             strokeWidth={2}
+//           />
+//         </LineChart>
+//       </ResponsiveContainer>
+//     </div>
+//   );
+// };
+
+// export default ForecastChart;

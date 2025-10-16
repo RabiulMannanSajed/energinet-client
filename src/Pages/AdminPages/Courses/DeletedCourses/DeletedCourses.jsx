@@ -27,7 +27,7 @@ const DeletedCourses = () => {
 
   return (
     <div className="">
-      <h1 className="text-xl font-bold mb-4">Deleted Courses</h1>
+      <h1 className="text-xl font-bold mb-4 text-white">Deleted Courses</h1>
 
       {deletedCoursesFind?.length === 0 ? (
         <p className="text-gray-500">No deleted courses found.</p>

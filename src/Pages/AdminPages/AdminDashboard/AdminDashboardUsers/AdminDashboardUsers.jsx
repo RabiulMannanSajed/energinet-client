@@ -1,6 +1,7 @@
 import React from "react";
 import useUsers from "../../../../hooks/useUsers";
 import { useUser } from "../../../../CustomProviders/useContext";
+import { IoPeople } from "react-icons/io5";
 
 const AdminDashboardUsers = () => {
   //  here we will shoe all users not admin
@@ -27,7 +28,10 @@ const AdminDashboardUsers = () => {
     >
       <h2 className="text-xl">Active User </h2>
       <br />
-      <p className="text-2xl ">{totalUsers}</p>
+      <div className="flex items-center gap-2">
+        <p className="text-2xl ">{totalUsers}</p>
+        <IoPeople className="text-yellow-300 text-2xl font-bold" />
+      </div>
     </div>
   );
 };

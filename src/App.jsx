@@ -15,6 +15,7 @@ import TradeMarketPlace from "./Pages/Home/TradeMarketPlace/TradeMarketPlace";
 import MakeTradeOffer from "./Pages/Home/MakeTradeOffer/MakeTradeOffer";
 import Payment from "./Pages/Home/Payment/Payment";
 import ForecastChart from "./Pages/Home/Forcast/ForecastChart";
+import AdminTrades from "./Pages/AdminPages/AdminTrades/AdminTrades";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="courseUpload" element={<CoursesUpload />} />
           <Route path="deletedCourses" element={<DeletedCourses />} />
           <Route path="userActivity" element={<UserActiveits />} />
+          <Route path="adminTreads" element={<AdminTrades />} />
         </Route>
       </Routes>
     </>

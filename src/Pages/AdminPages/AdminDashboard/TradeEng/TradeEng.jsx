@@ -1,3 +1,4 @@
+import { SlEnergy } from "react-icons/sl";
 import useTrade from "../../../../hooks/useTrade";
 
 const TradeEng = () => {
@@ -26,7 +27,10 @@ const TradeEng = () => {
            "
       >
         <h2 className="text-xl">Total Energy Produce</h2> <br />
-        <p className="text-2xl">{totalProducedEnergy}</p>
+        <div className="flex items-center gap-2">
+          <p className="text-2xl">{totalProducedEnergy}</p>{" "}
+          <SlEnergy className="text-yellow-300 text-2xl font-bold" />
+        </div>
       </div>
       <div
         className="
@@ -41,8 +45,8 @@ const TradeEng = () => {
                 z-10
            "
       >
-        <h2 className="text-xl">Total Energy Treaded Today</h2> <br />
-        <p className="text-2xl">{totalSoldEnergy}</p>
+        <h2 className="text-xl">Total Energy Treaded </h2> <br />
+        <p className="text-2xl">{totalSoldEnergy} ৳</p>
       </div>
     </div>
   );

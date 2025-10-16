@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Menu, X, Home, BarChart3 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
+import { FaRegChartBar, FaRegUser, FaUser } from "react-icons/fa";
+import { MdOutlineFolderDelete, MdOutlinePlayLesson } from "react-icons/md";
 
 const AdminNavbar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -10,19 +12,24 @@ const AdminNavbar = () => {
   const navItems = [
     { name: "Admin Dashboard", path: "/adminNavbar", icon: <Home size={28} /> },
     {
+      name: "Trades",
+      path: "/adminNavbar/adminTreads",
+      icon: <FaRegChartBar size={28} />,
+    },
+    {
       name: "Courses",
       path: "/adminNavbar/course",
-      icon: <BarChart3 size={28} />,
+      icon: <MdOutlinePlayLesson size={28} />,
     },
     {
       name: "Deleted Courses",
       path: "/adminNavbar/deletedCourses",
-      icon: <BarChart3 size={28} />,
+      icon: <MdOutlineFolderDelete size={28} />,
     },
     {
       name: "User Activity",
       path: "/adminNavbar/userActivity",
-      icon: <BarChart3 size={28} />,
+      icon: <FaRegUser size={28} />,
     },
   ];
   return (
