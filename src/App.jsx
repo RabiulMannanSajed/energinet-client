@@ -16,12 +16,22 @@ import MakeTradeOffer from "./Pages/Home/MakeTradeOffer/MakeTradeOffer";
 import Payment from "./Pages/Home/Payment/Payment";
 import ForecastChart from "./Pages/Home/Forcast/ForecastChart";
 import AdminTrades from "./Pages/AdminPages/AdminTrades/AdminTrades";
+import Help from "./Shared/Help/Help";
+import HomeNavbar from "./Shared/HomeNavbar/HomeNavbar";
+import AboutUs from "./Shared/Home/AboutUs/AboutUs";
+import Contactus from "./Shared/Home/Contactus/Contactus";
+import HomePage from "./Shared/Home/HomePage/HomePage";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Signup />} /> {/* default landing page */}
+        <Route path="/" element={<HomeNavbar />}>
+          <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutUs />} />
+          <Route path="contact" element={<Contactus />} />
+        </Route>
+        {/* <Route path="/" element={<Signup />} /> default landing page */}
         <Route path="signup" element={<Signup />} />
         <Route path="login" element={<Login />} />
         {/*  this is for the user  */}

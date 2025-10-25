@@ -71,7 +71,7 @@ const AdminNavbar = () => {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 bg-gray-900 p-6 overflow-y-auto">
+      <div className="flex-1 bg-[#F0FAF7] p-6 overflow-y-auto">
         <Outlet />
       </div>
     </div>

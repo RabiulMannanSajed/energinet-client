@@ -19,7 +19,7 @@ const AdminTrades = () => {
                   #
                 </th>
                 <th className="px-4 py-2 text-left border-b border-gray-700">
-                  User Email
+                  User Name
                 </th>
                 <th className="px-4 py-2 text-left border-b border-gray-700">
                   Sell Energy (kWh)
@@ -44,6 +44,8 @@ const AdminTrades = () => {
                   <td className="px-4 py-2 border-b border-gray-700">
                     {index + 1}
                   </td>
+
+                  {/*TODO:  here add the user name not the email and show the user id also  */}
                   <td className="px-4 py-2 border-b border-gray-700">
                     {trade.userId?.email || "N/A"}
                   </td>

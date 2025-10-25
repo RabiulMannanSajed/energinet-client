@@ -6,8 +6,8 @@ import WalletBalance from "./WalletBalance/WalletBalance";
 
 const Home = () => {
   return (
-    <div className="bg-gray-900">
-      <h2 className="text-white text-2xl mb-5">Dashboard</h2>
+    <div className="">
+      <h2 className="text-green-900 text-2xl font-semibold mb-5">Dashboard</h2>
       <div className="flex  gap-6 p-6">
         <div className="flex-1 space-y-6">
           <Overview />

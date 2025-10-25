@@ -1,6 +1,185 @@
-import { useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import * as tf from "@tensorflow/tfjs";
+// import { Line } from "react-chartjs-2";
+// import {
+//   Chart as ChartJS,
+//   CategoryScale,
+//   LinearScale,
+//   PointElement,
+//   LineElement,
+//   Title,
+//   Tooltip,
+//   Legend,
+// } from "chart.js";
+
+// ChartJS.register(
+//   CategoryScale,
+//   LinearScale,
+//   PointElement,
+//   LineElement,
+//   Title,
+//   Tooltip,
+//   Legend
+// );
+
+// export default function EnergyForecast() {
+//   const [chartData, setChartData] = useState(null);
+//   const WEATHER_API_KEY = "802503a066b3ee16122a59e19158b3c3";
+//   const LAT = 23.8285;
+//   const LON = 90.3826;
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         // 1️⃣ Fetch trades
+//         const tradesRes = await axios.get(
+//           "http://localhost:5000/api/v1/energinet/treadEnergy/get-all-treads"
+//         );
+//         const trades = tradesRes.data;
+
+//         const soldTrades = trades.filter((t) => t.status === "sold");
+//         const allProduced = trades;
+
+//         const soldEnergy = soldTrades.map((t) => t.sellEnergyAmount);
+//         const producedEnergy = allProduced.map((t) => t.sellEnergyAmount);
+//         const dates = allProduced.map((t) =>
+//           new Date(t.createdAt).toLocaleDateString()
+//         );
+
+//         const weatherRes = await axios.get(
+//           `https://api.openweathermap.org/data/2.5/forecast?lat=${LAT}&lon=${LON}&cnt=20&units=metric&appid=${WEATHER_API_KEY}`
+//         );
+
+//         const weatherData = weatherRes.data.list.map((w) => ({
+//           temp: w.main.temp,
+//           humidity: w.main.humidity,
+//           dt: w.dt_txt,
+//         }));
+
+//         // Helper to train + forecast
+//         const trainAndForecast = async (energyArray) => {
+//           if (energyArray.length < 3) return [];
+
+//           const X = energyArray.map((e, i) => [
+//             e,
+//             weatherData[i % weatherData.length].temp,
+//             weatherData[i % weatherData.length].humidity,
+//           ]);
+
+//           const y = energyArray
+//             .slice(1)
+//             .concat(energyArray[energyArray.length - 1]);
+//           const xs = tf.tensor2d(X.slice(0, -1), [X.length - 1, 3]);
+//           const ys = tf.tensor2d(y.slice(0, -1), [y.length - 1, 1]);
+
+//           // Build simple model
+//           const model = tf.sequential();
+//           model.add(
+//             tf.layers.dense({ units: 16, activation: "relu", inputShape: [3] })
+//           );
+//           model.add(tf.layers.dense({ units: 8, activation: "relu" }));
+//           model.add(tf.layers.dense({ units: 1 }));
+//           model.compile({ optimizer: "adam", loss: "meanSquaredError" });
+
+//           await model.fit(xs, ys, { epochs: 150, verbose: 0 });
+
+//           // Predict 7 days
+//           const futureX = weatherData.map((w) => [
+//             energyArray[energyArray.length - 1],
+//             w.temp,
+//             w.humidity,
+//           ]);
+
+//           const preds = model.predict(
+//             tf.tensor2d(futureX, [futureX.length, 3])
+//           );
+//           return Array.from(preds.dataSync());
+//         };
+
+//         // 4️⃣ Train and predict for both
+//         const forecastSold = await trainAndForecast(soldEnergy);
+//         const forecastProduced = await trainAndForecast(producedEnergy);
+
+//         const forecastLabels = weatherData.map((w) =>
+//           new Date(w.dt).toLocaleDateString("en-US", { weekday: "short" })
+//         );
+
+//         // 5️⃣ Chart data setup
+//         setChartData({
+//           labels: [...dates, ...forecastLabels],
+//           datasets: [
+//             {
+//               label: "Historical Produced Energy",
+//               data: producedEnergy,
+//               borderColor: "rgba(54,162,235,1)",
+//               backgroundColor: "rgba(54,162,235,0.2)",
+//               tension: 0.3,
+//             },
+//             {
+//               label: "Produced Energy Forecast (Next few Days)",
+//               data: [
+//                 ...Array(producedEnergy.length).fill(null),
+//                 ...forecastProduced,
+//               ],
+//               borderColor: "rgba(54,162,235,0.8)",
+//               backgroundColor: "rgba(54,162,235,0.1)",
+//               borderDash: [4, 4],
+//               tension: 0.3,
+//             },
+//             {
+//               label: "Historical Sold Energy",
+//               data: soldEnergy,
+//               borderColor: "rgba(255,99,132,1)",
+//               backgroundColor: "rgba(255,99,132,0.2)",
+//               tension: 0.3,
+//             },
+//             {
+//               label: "Sold Energy Forecast (Next 7 Days)",
+//               data: [...Array(soldEnergy.length).fill(null), ...forecastSold],
+//               borderColor: "rgba(255,99,132,0.8)",
+//               backgroundColor: "rgba(255,99,132,0.1)",
+//               borderDash: [5, 5],
+//               tension: 0.3,
+//             },
+//           ],
+//         });
+//       } catch (err) {
+//         console.error("Error fetching or predicting energy:", err);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   if (!chartData) return <p className="text-white">Training AI model...</p>;
+
+//   return (
+//     <div className="p-6 bg-white/5 rounded-xl shadow-lg text-white">
+//       <h2 className="text-lg font-semibold mb-4">
+//         ⚡ AI Forecast of Energy Production & Sales (Next few Days)
+//       </h2>
+//       <Line
+//         data={chartData}
+//         options={{
+//           responsive: true,
+//           plugins: {
+//             legend: { position: "top", labels: { color: "#fff" } },
+//           },
+//           scales: {
+//             x: { ticks: { color: "#fff" } },
+//             y: { ticks: { color: "#fff" } },
+//           },
+//         }}
+//       />
+//     </div>
+//   );
+// }
+
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import * as tf from "@tensorflow/tfjs";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,7 +191,6 @@ import {
   Legend,
 } from "chart.js";
 
-// Register Chart.js modules
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,227 +201,171 @@ ChartJS.register(
   Legend
 );
 
-export default function ForecastChart() {
-  const [historical, setHistorical] = useState([]);
-  const [forecast, setForecast] = useState([]);
+export default function EnergyForecast() {
+  const [chartData, setChartData] = useState(null);
+  const WEATHER_API_KEY = "802503a066b3ee16122a59e19158b3c3";
+  const LAT = 23.8285;
+  const LON = 90.3826;
 
   useEffect(() => {
     const fetchData = async () => {
-      // 1. Get historical tread data
-      const histRes = await axios.get(
-        "http://localhost:5000/api/v1/energinet/treadEnergy/get-all-treads"
-      );
-      const histData = histRes.data;
-      setHistorical(histData);
+      try {
+        // 1️⃣ Fetch trades
+        const tradesRes = await axios.get(
+          "http://localhost:5000/api/v1/energinet/treadEnergy/get-all-treads"
+        );
+        const trades = tradesRes.data;
 
-      // 2. Forecast in frontend (next 7 days)
-      const values = histData.map((item) => item.sellEnergyAmount);
+        const soldTrades = trades.filter((t) => t.status === "sold");
+        const allProduced = trades;
 
-      if (values.length > 1) {
-        const diffs = values.slice(1).map((v, i) => v - values[i]); // differences between consecutive points
-        const avgDiff = diffs.reduce((a, b) => a + b, 0) / diffs.length;
+        const soldEnergy = soldTrades.map((t) => t.sellEnergyAmount);
+        const producedEnergy = allProduced.map((t) => t.sellEnergyAmount);
+        const dates = allProduced.map((t) =>
+          new Date(t.createdAt).toLocaleDateString()
+        );
 
-        let lastValue = values[values.length - 1];
-        const forecastData = [];
+        const weatherRes = await axios.get(
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${LAT}&lon=${LON}&cnt=20&units=metric&appid=${WEATHER_API_KEY}`
+        );
 
-        for (let i = 1; i <= 7; i++) {
-          lastValue += avgDiff;
-          forecastData.push({
-            day: i,
-            forecastSellEnergyAmount: Math.max(lastValue, 0),
-          });
-        }
+        const weatherData = weatherRes.data.list.map((w) => ({
+          temp: w.main.temp,
+          humidity: w.main.humidity,
+          dt: w.dt_txt,
+        }));
 
-        setForecast(forecastData);
+        // Helper to train + forecast
+        const trainAndForecast = async (energyArray) => {
+          if (energyArray.length < 3) return [];
+
+          const X = energyArray.map((e, i) => [
+            e,
+            weatherData[i % weatherData.length].temp,
+            weatherData[i % weatherData.length].humidity,
+          ]);
+
+          const y = energyArray
+            .slice(1)
+            .concat(energyArray[energyArray.length - 1]);
+          const xs = tf.tensor2d(X.slice(0, -1), [X.length - 1, 3]);
+          const ys = tf.tensor2d(y.slice(0, -1), [y.length - 1, 1]);
+
+          // Build simple model
+          const model = tf.sequential();
+          model.add(
+            tf.layers.dense({ units: 16, activation: "relu", inputShape: [3] })
+          );
+          model.add(tf.layers.dense({ units: 8, activation: "relu" }));
+          model.add(tf.layers.dense({ units: 1 }));
+          model.compile({ optimizer: "adam", loss: "meanSquaredError" });
+
+          await model.fit(xs, ys, { epochs: 150, verbose: 0 });
+
+          // Predict 7 days
+          const futureX = weatherData.map((w) => [
+            energyArray[energyArray.length - 1],
+            w.temp,
+            w.humidity,
+          ]);
+
+          const preds = model.predict(
+            tf.tensor2d(futureX, [futureX.length, 3])
+          );
+          return Array.from(preds.dataSync());
+        };
+
+        // 4️⃣ Train and predict for both
+        const forecastSold = await trainAndForecast(soldEnergy);
+        const forecastProduced = await trainAndForecast(producedEnergy);
+
+        const forecastLabels = weatherData.map((w) =>
+          new Date(w.dt).toLocaleDateString("en-US", { weekday: "short" })
+        );
+
+        // 5️⃣ Chart data setup
+        setChartData({
+          labels: [...dates, ...forecastLabels],
+          datasets: [
+            {
+              label: "Historical Produced Energy",
+              data: producedEnergy,
+              borderColor: "#22c55e", // Bright green
+              backgroundColor: "rgba(34, 197, 94, 0.2)",
+              tension: 0.4,
+            },
+            {
+              label: "Produced Energy Forecast",
+              data: [
+                ...Array(producedEnergy.length).fill(null),
+                ...forecastProduced,
+              ],
+              borderColor: "#4ade80", // Soft lime green
+              backgroundColor: "rgba(74, 222, 128, 0.15)",
+              borderDash: [6, 6],
+              tension: 0.4,
+            },
+            {
+              label: "Historical Sold Energy",
+              data: soldEnergy,
+              borderColor: "#3b82f6", // Blue
+              backgroundColor: "rgba(59, 130, 246, 0.2)",
+              tension: 0.4,
+            },
+            {
+              label: "Sold Energy Forecast",
+              data: [...Array(soldEnergy.length).fill(null), ...forecastSold],
+              borderColor: "#60a5fa", // Light blue
+              backgroundColor: "rgba(96, 165, 250, 0.15)",
+              borderDash: [6, 6],
+              tension: 0.4,
+            },
+          ],
+        });
+      } catch (err) {
+        console.error("Error fetching or predicting energy:", err);
       }
     };
 
     fetchData();
   }, []);
 
-  // Prepare labels (historical dates + forecast days)
-  const labels = [
-    ...historical.map((item) => new Date(item.createdAt).toLocaleDateString()),
-    ...forecast.map((f) => `Day +${f.day}`),
-  ];
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Historical Sell Energy Amount",
-        data: historical.map((item) => item.sellEnergyAmount),
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        tension: 0.3,
-      },
-      {
-        label: "Forecasted Sell Energy Amount",
-        data: [
-          ...new Array(historical.length).fill(null), // keep space for history
-          ...forecast.map((f) => f.forecastSellEnergyAmount),
-        ],
-        borderColor: "rgba(255, 99, 132, 1)",
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderDash: [5, 5],
-        tension: 0.3,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Sell Energy Amount Forecast (Next 7 Days)",
-      },
-    },
-  };
+  if (!chartData)
+    return (
+      <div className="p-6 bg-gradient-to-r from-green-800 to-green-600 text-white rounded-xl shadow-lg text-center">
+        <p className="text-lg font-medium animate-pulse">
+          ⏳ Training AI model, please wait...
+        </p>
+      </div>
+    );
 
   return (
-    <div className="p-6 bg-white/5 rounded-xl shadow-lg">
-      <Line data={data} options={options} />
+    <div className="p-6 bg-gradient-to-br from-green-900 via-green-800 to-blue-900 rounded-2xl shadow-2xl text-white">
+      <h2 className="text-2xl font-bold mb-4">
+        ⚡ AI Forecast of Energy Production & Sales
+      </h2>
+      <Line
+        data={chartData}
+        options={{
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+              labels: { color: "#e0e0e0", font: { size: 13 } },
+            },
+          },
+          scales: {
+            x: {
+              grid: { color: "rgba(255,255,255,0.1)" },
+              ticks: { color: "#ccc" },
+            },
+            y: {
+              grid: { color: "rgba(255,255,255,0.1)" },
+              ticks: { color: "#ccc" },
+            },
+          },
+        }}
+      />
     </div>
   );
 }
-
-// import React, { useEffect, useState } from "react";
-// import {
-//   LineChart,
-//   Line,
-//   XAxis,
-//   YAxis,
-//   CartesianGrid,
-//   Tooltip,
-//   Legend,
-//   ResponsiveContainer,
-// } from "recharts";
-
-// // Example data (replace this with your API data)
-// const rawData = [
-//   {
-//     status: "pending",
-//     sellEnergyAmount: 10,
-//     createdAt: "2025-09-20T10:51:33.215Z",
-//   },
-//   {
-//     status: "sold",
-//     sellEnergyAmount: 15,
-//     createdAt: "2025-09-24T12:19:24.627Z",
-//   },
-//   {
-//     status: "pending",
-//     sellEnergyAmount: 12,
-//     createdAt: "2025-09-24T12:20:23.531Z",
-//   },
-//   {
-//     status: "pending",
-//     sellEnergyAmount: 12,
-//     createdAt: "2025-09-24T12:21:05.085Z",
-//   },
-//   {
-//     status: "pending",
-//     sellEnergyAmount: 25,
-//     createdAt: "2025-09-28T05:20:51.150Z",
-//   },
-//   {
-//     status: "pending",
-//     sellEnergyAmount: 10,
-//     createdAt: "2025-09-28T05:21:18.170Z",
-//   },
-//   {
-//     status: "pending",
-//     sellEnergyAmount: 20,
-//     createdAt: "2025-09-28T05:21:56.760Z",
-//   },
-//   {
-//     status: "sold",
-//     sellEnergyAmount: 15,
-//     createdAt: "2025-10-14T06:27:51.582Z",
-//   },
-// ];
-
-// const ForecastChart = () => {
-//   const [chartData, setChartData] = useState([]);
-
-//   useEffect(() => {
-//     // Sort data by date
-//     const sorted = rawData
-//       .map((item) => ({
-//         date: new Date(item.createdAt).toISOString().split("T")[0],
-//         energy: item.sellEnergyAmount,
-//       }))
-//       .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-//     // --- Simple Trend Forecast (Linear Projection) ---
-//     const n = sorted.length;
-//     const avgEnergy = sorted.reduce((sum, d) => sum + d.energy, 0) / n;
-//     const avgIndex = (n - 1) / 2;
-
-//     // linear slope
-//     const slope =
-//       sorted.reduce(
-//         (sum, d, i) => sum + (i - avgIndex) * (d.energy - avgEnergy),
-//         0
-//       ) / sorted.reduce((sum, _, i) => sum + (i - avgIndex) ** 2, 0);
-
-//     // Predict next 5 days
-//     const lastDate = new Date(sorted[sorted.length - 1].date);
-//     const forecast = [];
-//     for (let i = 1; i <= 5; i++) {
-//       const nextDate = new Date(lastDate);
-//       nextDate.setDate(lastDate.getDate() + i);
-//       const nextEnergy = avgEnergy + slope * (n - 1 + i - avgIndex);
-//       forecast.push({
-//         date: nextDate.toISOString().split("T")[0],
-//         forecast: parseFloat(nextEnergy.toFixed(2)),
-//       });
-//     }
-
-//     // Combine actual + forecast
-//     const combined = sorted.map((d) => ({
-//       ...d,
-//       forecast: null,
-//     }));
-
-//     setChartData([...combined, ...forecast]);
-//   }, []);
-
-//   return (
-//     <div className="p-4 bg-white shadow-md rounded-2xl">
-//       <h2 className="text-xl font-semibold mb-4 text-center text-black">
-//         ⚡ Sell Energy Forecast (AI Trend)
-//       </h2>
-//       <ResponsiveContainer width="100%" height={400}>
-//         <LineChart data={chartData}>
-//           <CartesianGrid strokeDasharray="3 3" />
-//           <XAxis dataKey="date" />
-//           <YAxis />
-//           <Tooltip />
-//           <Legend />
-//           <Line
-//             type="monotone"
-//             dataKey="energy"
-//             stroke="#8884d8"
-//             name="Actual"
-//             strokeWidth={2}
-//           />
-//           <Line
-//             type="monotone"
-//             dataKey="forecast"
-//             stroke="#82ca9d"
-//             name="Forecast"
-//             strokeDasharray="5 5"
-//             strokeWidth={2}
-//           />
-//         </LineChart>
-//       </ResponsiveContainer>
-//     </div>
-//   );
-// };
-
-// export default ForecastChart;

@@ -68,7 +68,7 @@ const Navbar = () => {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 bg-gray-900 p-6 overflow-y-auto">
+      <div className="flex-1  p-6 overflow-y-auto bg-[#F0FAF7]">
         <Outlet />
       </div>
     </div>

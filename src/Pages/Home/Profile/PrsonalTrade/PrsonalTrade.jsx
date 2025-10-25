@@ -9,7 +9,7 @@ const PrsonalTrade = () => {
 
   const myTrades = treads.filter((trade) => trade.userId.email === userEmail);
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto text-black">
       <table className="min-w-full   rounded-lg">
         <thead className="">
           <tr>

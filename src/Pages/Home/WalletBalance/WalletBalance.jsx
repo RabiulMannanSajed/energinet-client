@@ -11,12 +11,7 @@ const WalletBalance = () => {
 
   const [treads] = useTrade();
 
-  
-  return (
-    <div className="text-white  ">
-      <h1>Wallet Balance</h1>
-    </div>
-  );
+  return <div className="text-white  ">{/* <h1>Wallet Balance</h1> */}</div>;
 };
 
 export default WalletBalance;

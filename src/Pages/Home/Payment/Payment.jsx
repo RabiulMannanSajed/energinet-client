@@ -3,6 +3,7 @@ import { useUser } from "../../../CustomProviders/useContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import useUsers from "../../../hooks/useUsers";
+import Swal from "sweetalert2";
 
 const Payment = () => {
   const { userEmail } = useUser();
@@ -24,6 +25,16 @@ const Payment = () => {
     }
   }, [userEmail, users]);
 
+  // Auto-fill seller's number based on selected payment method
+  useEffect(() => {
+    if (trade?.userId?.payments && paymentMethod) {
+      const selected = trade.userId.payments.find(
+        (p) => p.PMethod.toLowerCase() === paymentMethod.toLowerCase()
+      );
+      setPhoneNumber(selected ? selected.number : "");
+    }
+  }, [paymentMethod, trade]);
+
   const handlePayment = async () => {
     try {
       setLoading(true);
@@ -31,7 +42,7 @@ const Payment = () => {
       const payload = {
         buyerId: findUser?._id,
         sellerId: trade.userId?._id,
-        energyAmount: trade.sellEnergyAmount.toString(), // ✅ string
+        energyAmount: trade.sellEnergyAmount.toString(),
         amount: trade.price.toString(),
         paymentMethod,
         tradeId: trade._id,
@@ -46,19 +57,31 @@ const Payment = () => {
         payload
       );
       console.log(res);
-      if (res.data.success) {
-        alert("Payment successful!");
-        navigate("/navbar/trades");
-      } else {
-        alert("Payment successful.");
-      }
+
+      // ✅ Use SweetAlert2
+      await Swal.fire({
+        title: "✅ Payment Successful!",
+        text: "Your payment has been processed successfully.",
+        icon: "success",
+        confirmButtonText: "Go to Trades",
+        confirmButtonColor: "#3085d6",
+      });
+
+      // ✅ Navigate after the alert is closed
+      navigate("/navbar/trades");
     } catch (error) {
       console.error("Payment error:", error.response?.data || error);
-      alert("Error while processing payment.");
+      await Swal.fire({
+        title: "❌ Error",
+        text: "Error while processing payment.",
+        icon: "error",
+        confirmButtonColor: "#d33",
+      });
     } finally {
       setLoading(false);
     }
   };
+
   if (!trade) {
     return (
       <div className="text-white p-6">
@@ -72,6 +95,7 @@ const Payment = () => {
       </div>
     );
   }
+
   return (
     <div className="text-white p-6 max-w-lg mx-auto space-y-6">
       <h1 className="text-2xl font-bold">Payment</h1>
@@ -85,6 +109,7 @@ const Payment = () => {
           <span className="font-bold">Energy Amount:</span>{" "}
           {trade.sellEnergyAmount} kWh
         </p>
+
         <p>
           <span className="font-bold">Price:</span> ${trade.price}
         </p>
@@ -111,9 +136,9 @@ const Payment = () => {
         <input
           type="text"
           value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
+          // onChange={(e) => setPhoneNumber(e.target.value)}
           className="w-full p-2 rounded bg-gray-700 border border-gray-600"
-          placeholder="Enter phone number"
+          readOnly
         />
       </div>
 

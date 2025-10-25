@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUser } from "../../../CustomProviders/useContext";
 import useUsers from "../../../hooks/useUsers";
+import Swal from "sweetalert2";
 
-const MakeTradeOffer = () => {
+const MakeTradeOffer = ({ setOpenModal }) => {
   const { userEmail } = useUser();
+  console.log("userEmail", userEmail);
   const [users, refetch, isPending] = useUsers();
   const [findUser, setFindUser] = useState();
   console.log("findUser", findUser);
@@ -44,7 +46,14 @@ const MakeTradeOffer = () => {
       console.log("Trade created:", result);
 
       reset(); // ✅ clear form after submit
-      alert("Trade offer created successfully!");
+      await Swal.fire({
+        title: "✅ Trade Successful!",
+        text: "YourTrade has been processed successfully.",
+        icon: "success",
+        confirmButtonText: "Go to Trades",
+        confirmButtonColor: "#3085d6",
+      });
+      setOpenModal(false);
     } catch (error) {
       console.error(error);
       alert("Something went wrong!");
