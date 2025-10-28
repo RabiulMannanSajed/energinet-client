@@ -68,6 +68,61 @@ const Payment = () => {
   }, [showOtpModal, timeLeft]);
 
   // Payment Handler
+  // const handlePayment = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const payload = {
+  //       buyerId: findUser?._id,
+  //       sellerId: trade.userId?._id,
+  //       energyAmount: trade.sellEnergyAmount.toString(),
+  //       amount: trade.price.toString(),
+  //       paymentMethod,
+  //       tradeId: trade._id,
+  //       status: "SUCCESS",
+  //       phoneNumber,
+  //     };
+
+  //     const res = await axios.post(
+  //       `${import.meta.env.VITE_URL}/payment/create-payment`,
+  //       payload
+  //     );
+
+  //     if (res.data.success) {
+  //       await Swal.fire({
+  //         title: "💰 Payment Successful!",
+  //         html: `
+  //           <p>Your transaction was completed successfully.</p>
+  //           <hr class="my-2">
+  //           <p><strong>Amount:</strong> $${trade.price}</p>
+  //           <p><strong>Energy:</strong> ${trade.sellEnergyAmount} kWh</p>
+  //         `,
+  //         icon: "success",
+  //         confirmButtonText: "Go to My Trades",
+  //         confirmButtonColor: "#22c55e",
+  //       });
+  //       navigate("/navbar/trades");
+  //     } else {
+  //       await Swal.fire({
+  //         title: "✅ Payment Completed",
+  //         text: "Your payment was processed successfully.",
+  //         icon: "info",
+  //         confirmButtonColor: "#3b82f6",
+  //       });
+  //       navigate("/navbar/trades");
+  //     }
+  //   } catch (error) {
+  //     console.error("Payment error:", error.response?.data || error);
+  //     await Swal.fire({
+  //       title: "❌ Payment Failed",
+  //       text: "Something went wrong while processing your payment. Please try again.",
+  //       icon: "error",
+  //       confirmButtonColor: "#ef4444",
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handlePayment = async () => {
     try {
       setLoading(true);
@@ -86,20 +141,25 @@ const Payment = () => {
         `${import.meta.env.VITE_URL}/payment/create-payment`,
         payload
       );
+      const payment = res.data;
 
-      if (res.data.success) {
+      if (payment && payment._id) {
+        const transactionId = payment._id;
+
         await Swal.fire({
           title: "💰 Payment Successful!",
           html: `
-            <p>Your transaction was completed successfully.</p>
-            <hr class="my-2">
-            <p><strong>Amount:</strong> $${trade.price}</p>
-            <p><strong>Energy:</strong> ${trade.sellEnergyAmount} kWh</p>
-          `,
+      <p>Your transaction was completed successfully.</p>
+      <hr class="my-2">
+      <p><strong>Transaction ID:</strong> ${transactionId}</p>
+      <p><strong>Amount:</strong> ৳${trade.price}</p>
+      <p><strong>Energy:</strong> ${trade.sellEnergyAmount} kWh</p>
+    `,
           icon: "success",
-          confirmButtonText: "Go to My Trades",
+          confirmButtonText: "Go to Trades",
           confirmButtonColor: "#22c55e",
         });
+
         navigate("/navbar/trades");
       } else {
         await Swal.fire({
@@ -108,6 +168,7 @@ const Payment = () => {
           icon: "info",
           confirmButtonColor: "#3b82f6",
         });
+
         navigate("/navbar/trades");
       }
     } catch (error) {
