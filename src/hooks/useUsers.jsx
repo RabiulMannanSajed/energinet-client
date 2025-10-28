@@ -9,7 +9,7 @@ const useUsers = () => {
     queryKey: ["users"],
     queryFn: async () => {
       const res = await fetch(
-        "http://localhost:5000/api/v1/energinet/users/get-all-users"
+        `${import.meta.env.VITE_URL}/users/get-all-users`
       );
       return res.json();
     },

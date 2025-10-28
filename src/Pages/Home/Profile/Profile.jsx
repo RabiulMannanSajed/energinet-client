@@ -44,7 +44,7 @@ const Profile = () => {
     try {
       setLoading(true);
       const res = await axios.patch(
-        `http://localhost:5000/api/v1/energinet/users/${findUser?._id}`,
+        `${import.meta.env.VITE_URL}/users/${findUser?._id}`,
         {
           $push: {
             payments: {
@@ -89,10 +89,9 @@ const Profile = () => {
         return;
       }
 
-      await axios.patch(
-        `http://localhost:5000/api/v1/energinet/users/${findUser?._id}`,
-        { userImage: imgUrl }
-      );
+      await axios.patch(`${import.meta.env.VITE_URL}/users/${findUser?._id}`, {
+        userImage: imgUrl,
+      });
 
       Swal.fire("✅ Success", "Profile picture updated!", "success");
       refetch();
@@ -117,7 +116,7 @@ const Profile = () => {
     try {
       setLoading(true);
       const res = await axios.patch(
-        `http://localhost:5000/api/v1/energinet/users/${findUser?._id}`,
+        `${import.meta.env.VITE_URL}/users/${findUser?._id}`,
         {
           address: selectedAddress,
         }

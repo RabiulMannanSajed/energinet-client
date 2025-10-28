@@ -9,7 +9,7 @@ const useDeletedCourses = () => {
     queryKey: ["deletedCourses"],
     queryFn: async () => {
       const res = await fetch(
-        "http://localhost:5000/api/v1/energinet/courses/get-all-deleted-courses"
+        `${import.meta.env.VITE_URL}/courses/get-all-deleted-courses`
       );
       return res.json();
     },

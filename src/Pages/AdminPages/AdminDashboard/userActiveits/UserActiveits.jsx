@@ -13,10 +13,9 @@ const UserActiveits = () => {
       setLoadingId(user._id);
       const updatedStatus = !user.isDeleted;
 
-      await axios.patch(
-        `http://localhost:5000/api/v1/energinet/users/${user._id}`,
-        { isDeleted: updatedStatus }
-      );
+      await axios.patch(`${import.meta.env.VITE_URL}/users/${user._id}`, {
+        isDeleted: updatedStatus,
+      });
 
       toast.success(
         updatedStatus

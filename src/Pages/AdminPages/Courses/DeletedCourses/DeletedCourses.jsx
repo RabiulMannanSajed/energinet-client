@@ -13,9 +13,7 @@ const DeletedCourses = () => {
   const handleRestore = async (id) => {
     try {
       setLoading(true);
-      await axios.patch(
-        `http://localhost:5000/api/v1/energinet/courses/${id}/restore`
-      );
+      await axios.patch(`${import.meta.env.VITE_URL}/courses/${id}/restore`);
       alert("Course restored successfully!");
       refetch(); // refresh data after restore
     } catch (error) {

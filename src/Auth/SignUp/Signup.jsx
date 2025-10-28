@@ -17,7 +17,7 @@ const Signup = () => {
     console.log("Form data:", data);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/energinet/users/create-user",
+        `${import.meta.env.VITE_URL}/users/create-user`,
         data
       );
       console.log("User created:", response.data);

@@ -15,7 +15,7 @@ const Login = () => {
     console.log("Form data:", data);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/energinet/auth/login",
+        `${import.meta.env.VITE_URL}/auth/login`,
         data
       );
       console.log(response.data.user);

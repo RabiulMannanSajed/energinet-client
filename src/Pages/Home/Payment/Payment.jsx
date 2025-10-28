@@ -83,7 +83,7 @@ const Payment = () => {
       };
 
       const res = await axios.post(
-        "http://localhost:5000/api/v1/energinet/payment/create-payment",
+        `${import.meta.env.VITE_URL}/payment/create-payment`,
         payload
       );
 

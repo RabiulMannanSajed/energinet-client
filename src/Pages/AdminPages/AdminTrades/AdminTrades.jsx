@@ -1,4 +1,3 @@
-import React from "react";
 import useTrade from "../../../hooks/useTrade";
 
 const AdminTrades = () => {

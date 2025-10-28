@@ -9,7 +9,7 @@ const useTrade = () => {
     queryKey: ["treads"],
     queryFn: async () => {
       const res = await fetch(
-        "http://localhost:5000/api/v1/energinet/treadEnergy/get-all-treads"
+        `${import.meta.env.VITE_URL}/treadEnergy/get-all-treads`
       );
       return res.json();
     },
