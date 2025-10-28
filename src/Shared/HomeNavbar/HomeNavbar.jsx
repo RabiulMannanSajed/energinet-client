@@ -1,7 +1,7 @@
 import { Link } from "lucide-react";
 import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-
+import logo from "../../assets/logo2.png";
 const HomeNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -19,9 +19,10 @@ const HomeNavbar = () => {
           <div className="flex justify-between items-center h-16">
             {/* logo */}
             <div className="flex items-center gap-4">
-              <Link to="/" className="flex items-center gap-2">
+              {/* <Link to="/" className="flex items-center gap-2">
                 <div className="w-9 h-9 rounded-full bg-gradient-to-br from-green-500 to-green-500 flex items-center justify-center text-white font-bold"></div>
-              </Link>
+              </Link> */}
+              <img src={logo} alt="Logo" className="h-15 w-auto" />{" "}
             </div>
 
             {/* desktop nav */}
@@ -45,7 +46,7 @@ const HomeNavbar = () => {
             </nav>
 
             {/* actions */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 text-md font-medium text-gray-600 hover:text-gray-800">
               {/* avatar */}
               <NavLink to="signup">SignUp</NavLink>
             </div>

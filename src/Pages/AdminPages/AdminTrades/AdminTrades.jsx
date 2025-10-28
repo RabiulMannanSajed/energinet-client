@@ -6,13 +6,15 @@ const AdminTrades = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-semibold text-white mb-4">Admin Trades</h2>
+      <h2 className="text-2xl font-semibold text-green-900 mb-4">
+        Admin Trades
+      </h2>
 
       {treads?.length === 0 ? (
         <p className="text-gray-400">No trades found.</p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-700 text-sm text-gray-200">
+          <table className="min-w-full border border-gray-700 text-sm text-gray-500">
             <thead className="bg-gray-800 text-gray-300">
               <tr>
                 <th className="px-4 py-2 text-left border-b border-gray-700">
@@ -39,15 +41,13 @@ const AdminTrades = () => {
               {treads.map((trade, index) => (
                 <tr
                   key={trade._id}
-                  className="hover:bg-gray-800 transition-colors duration-200"
+                  className="hover:bg-gray-800 hover:text-white transition-colors duration-300"
                 >
                   <td className="px-4 py-2 border-b border-gray-700">
                     {index + 1}
                   </td>
-
-                  {/*TODO:  here add the user name not the email and show the user id also  */}
                   <td className="px-4 py-2 border-b border-gray-700">
-                    {trade.userId?.email || "N/A"}
+                    {trade.userId?.username || "N/A"}
                   </td>
                   <td className="px-4 py-2 border-b border-gray-700">
                     {trade.sellEnergyAmount}
@@ -62,7 +62,7 @@ const AdminTrades = () => {
                           ? "bg-yellow-600 text-yellow-100"
                           : trade.status === "sold"
                           ? "bg-green-600 text-green-100"
-                          : "bg-gray-600 text-gray-100"
+                          : "bg-gray-600 text-gray-300"
                       }`}
                     >
                       {trade.status}

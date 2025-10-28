@@ -1,25 +1,110 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MakeTradeOffer from "../MakeTradeOffer/MakeTradeOffer";
 import useTrade from "../../../hooks/useTrade";
+import { useUser } from "../../../CustomProviders/useContext";
+import useUsers from "../../../hooks/useUsers";
+import Swal from "sweetalert2";
 
 const TradeMarketPlace = () => {
   const [openModal, setOpenModal] = useState(false);
   const [treads, refetch] = useTrade();
   const navigate = useNavigate();
 
-  // ✅ Filter only today's trades
+  const { userEmail } = useUser();
+  const [users] = useUsers();
+  const [findUser, setFindUser] = useState(null);
+
+  useEffect(() => {
+    if (users && userEmail) {
+      const currentUser = users.find((user) => user.email === userEmail);
+      setFindUser(currentUser || null);
+    }
+  }, [userEmail, users]);
+
+  // ✅ Handle Create Offer Click
+  const handleCreateOffer = () => {
+    if (!findUser) return;
+
+    const hasAddress = !!findUser.address;
+    const hasPayment = !!findUser.payments && findUser.payments.length > 0;
+
+    if (!hasAddress || !hasPayment) {
+      Swal.fire({
+        title: "Incomplete Profile",
+        text: "You must add your address and payment method before creating a trade offer.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#2563EB",
+        cancelButtonColor: "#6B7280",
+        confirmButtonText: "Update Now",
+        cancelButtonText: "Cancel",
+        background: "#1E293B",
+        color: "#E2E8F0",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/navbar/profile");
+        }
+      });
+      return;
+    }
+
+    setOpenModal(true);
+  };
+
+  // ✅ Handle Payment Click
+  const handlePayment = (trade) => {
+    if (!findUser) return;
+
+    // 🚫 Prevent buying your own trade
+    if (trade.userId?.email === findUser.email) {
+      Swal.fire({
+        icon: "error",
+        title: "Not Allowed",
+        text: "You cannot purchase your own trade offer.",
+        confirmButtonColor: "#EF4444",
+        background: "#0f172a",
+        color: "#E2E8F0",
+      });
+      return;
+    }
+
+    // ✅ Check if user has address and payment info
+    if (
+      !findUser.address ||
+      !findUser.payments ||
+      findUser.payments.length === 0
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Profile Incomplete",
+        text: "Please update your address and payment method before proceeding.",
+        showCancelButton: true,
+        confirmButtonText: "Update Profile",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#3B82F6",
+        cancelButtonColor: "#9CA3AF",
+        background: "#0f172a",
+        color: "#E2E8F0",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/navbar/profile");
+        }
+      });
+      return;
+    }
+
+    // ✅ Proceed with payment if valid
+    if (trade.status !== "pending") return;
+    navigate("/navbar/payment", { state: trade });
+  };
+
+  // ✅ Filter today's trades
   const today = new Date().toISOString().split("T")[0];
   const todaysTrades = treads?.filter((trade) => {
     const tradeDate = new Date(trade.createdAt).toISOString().split("T")[0];
     return tradeDate === today;
   });
-
-  // ✅ Handle payment redirect
-  const handlePayment = (trade) => {
-    if (trade.status !== "pending") return;
-    navigate("/navbar/payment", { state: trade });
-  };
 
   refetch();
 
@@ -31,7 +116,7 @@ const TradeMarketPlace = () => {
           Trade Marketplace
         </h1>
         <button
-          onClick={() => setOpenModal(true)}
+          onClick={handleCreateOffer}
           className="bg-blue-600 px-5 py-2 rounded-lg font-medium hover:bg-blue-700 transition-all duration-200"
         >
           + Create Offer
@@ -49,7 +134,7 @@ const TradeMarketPlace = () => {
             <tr>
               {[
                 "#",
-                "User Email",
+                "User Name",
                 "Energy (kWh)",
                 "Price ($)",
                 "Created At",
@@ -69,29 +154,35 @@ const TradeMarketPlace = () => {
               todaysTrades.map((trade, idx) => (
                 <tr
                   key={trade._id}
-                  className="hover:bg-blue-950/30 transition-colors duration-150"
+                  className="hover:bg-blue-950/10 transition-colors duration-150"
                 >
                   <td className="p-3 border-b border-gray-800">{idx + 1}</td>
-                  <td className="p-3 border-b border-gray-800">
+                  <td className="p-3 border-b border-gray-800 text-gray-500">
                     {trade.userId?.username}
                   </td>
-                  <td className="p-3 border-b border-gray-800">
+                  <td className="p-3 border-b border-gray-800 text-gray-500">
                     {trade.sellEnergyAmount}
                   </td>
                   <td className="p-3 border-b border-gray-800 text-blue-400 font-semibold">
                     ${trade.price}
                   </td>
-                  <td className="p-3 border-b border-gray-800 text-gray-400">
+                  <td className="p-3 border-b border-gray-800 text-gray-500">
                     {new Date(trade.createdAt).toLocaleString()}
                   </td>
                   <td className="p-3 border-b border-gray-800">
                     {trade.status === "pending" ? (
-                      <button
-                        onClick={() => handlePayment(trade)}
-                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-md transition-all duration-200"
-                      >
-                        Proceed to Payment
-                      </button>
+                      trade.userId?.email === findUser?.email ? (
+                        <span className="text-yellow-400 font-semibold">
+                          Your Offer
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => handlePayment(trade)}
+                          className="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-md transition-all duration-200"
+                        >
+                          Proceed to Payment
+                        </button>
+                      )
                     ) : (
                       <span className="text-red-400 font-semibold">
                         Sold Out
@@ -114,7 +205,7 @@ const TradeMarketPlace = () => {
         </table>
       </div>
 
-      {/* Modal for creating offers */}
+      {/* Modal */}
       {openModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50">
           <div className="bg-gray-900/95 border border-gray-700 p-6 rounded-2xl w-[420px] relative shadow-2xl">

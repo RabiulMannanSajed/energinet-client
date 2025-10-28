@@ -4,14 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import useUsers from "../../../hooks/useUsers";
 import Swal from "sweetalert2";
-import {
-  FaBolt,
-  FaMoneyBillWave,
-  FaPhoneAlt,
-  FaUser,
-  FaEnvelope,
-  FaIdBadge,
-} from "react-icons/fa";
+import { FaBolt, FaUser, FaEnvelope, FaIdBadge } from "react-icons/fa";
 
 const Payment = () => {
   const { userEmail } = useUser();
@@ -25,6 +18,11 @@ const Payment = () => {
   const [users] = useUsers();
   const [findUser, setFindUser] = useState();
   const [buyerNumber, setBuyerNumber] = useState("");
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [generatedOtp, setGeneratedOtp] = useState("");
+  const [enteredOtp, setEnteredOtp] = useState("");
+  const [timeLeft, setTimeLeft] = useState(30);
+
   // Find current user
   useEffect(() => {
     if (users && userEmail) {
@@ -33,6 +31,7 @@ const Payment = () => {
     }
   }, [userEmail, users]);
 
+  // Buyer payment info
   useEffect(() => {
     if (findUser?.payments && paymentMethod) {
       const selectedBuyer = findUser.payments.find(
@@ -41,7 +40,8 @@ const Payment = () => {
       setBuyerNumber(selectedBuyer ? selectedBuyer.number : "");
     }
   }, [paymentMethod, findUser]);
-  // Auto-fill seller number
+
+  // Seller payment info
   useEffect(() => {
     if (trade?.userId?.payments && paymentMethod) {
       const selected = trade.userId.payments.find(
@@ -51,10 +51,26 @@ const Payment = () => {
     }
   }, [paymentMethod, trade]);
 
+  // Countdown timer for OTP
+  useEffect(() => {
+    if (showOtpModal && timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (timeLeft === 0) {
+      setShowOtpModal(false);
+      Swal.fire({
+        icon: "error",
+        title: "⏰ OTP Expired",
+        text: "Please request a new OTP.",
+        confirmButtonColor: "#ef4444",
+      });
+    }
+  }, [showOtpModal, timeLeft]);
+
+  // Payment Handler
   const handlePayment = async () => {
     try {
       setLoading(true);
-
       const payload = {
         buyerId: findUser?._id,
         sellerId: trade.userId?._id,
@@ -92,6 +108,7 @@ const Payment = () => {
           icon: "info",
           confirmButtonColor: "#3b82f6",
         });
+        navigate("/navbar/trades");
       }
     } catch (error) {
       console.error("Payment error:", error.response?.data || error);
@@ -103,6 +120,35 @@ const Payment = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Generate OTP and open modal
+  const handleConfirmClick = () => {
+    const otp = Math.floor(10000 + Math.random() * 90000).toString();
+    setGeneratedOtp(otp);
+    setShowOtpModal(true);
+    setTimeLeft(30);
+    Swal.fire({
+      icon: "info",
+      title: "🔐 OTP Sent",
+      text: `Your OTP is ${otp}`,
+      timer: 3000,
+      showConfirmButton: false,
+    });
+  };
+
+  // Verify OTP
+  const verifyOtp = () => {
+    if (enteredOtp === generatedOtp) {
+      setShowOtpModal(false);
+      handlePayment();
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "❌ Invalid OTP",
+        text: "Please enter the correct OTP.",
+      });
     }
   };
 
@@ -123,9 +169,9 @@ const Payment = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row items-stretch justify-center  text-gray-100">
-      {/* LEFT SIDE - User Info */}
-      <div className="flex-1 flex flex-col justify-center  border-r border-gray-700 p-8 md:p-12">
+    <div className="min-h-screen flex flex-col md:flex-row items-stretch justify-center text-gray-100">
+      {/* LEFT SIDE - Info */}
+      <div className="flex-1 flex flex-col justify-center border-r border-gray-700 p-8 md:p-12">
         <h2 className="text-3xl font-bold mb-6 text-green-400 text-center">
           Trade Information
         </h2>
@@ -133,11 +179,11 @@ const Payment = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           {/* Buyer Info */}
           <div className="bg-gray-800 border border-gray-700 p-6 rounded-xl shadow-lg">
-            <div className="flex items-center gap-2 mb-3">
-              <FaUser className="text-blue-400" />
-              <h3 className="text-xl font-semibold">Buyer Info</h3>
-            </div>
+            <h3 className="text-xl font-semibold mb-2">Buyer Info</h3>
             <p className="flex items-center gap-2">
+              <FaUser className="text-blue-400" /> {findUser?.username}
+            </p>
+            <p className="flex items-center gap-2 mt-2">
               <FaEnvelope /> {findUser?.email || "N/A"}
             </p>
             <p className="flex items-center gap-2 mt-2">
@@ -147,11 +193,11 @@ const Payment = () => {
 
           {/* Seller Info */}
           <div className="bg-gray-800 border border-gray-700 p-6 rounded-xl shadow-lg">
-            <div className="flex items-center gap-2 mb-3">
-              <FaUser className="text-green-400" />
-              <h3 className="text-xl font-semibold">Seller Info</h3>
-            </div>
+            <h3 className="text-xl font-semibold mb-2">Seller Info</h3>
             <p className="flex items-center gap-2">
+              <FaUser className="text-green-400" /> {trade.userId?.username}
+            </p>
+            <p className="flex items-center gap-2 mt-2">
               <FaEnvelope /> {trade.userId?.email}
             </p>
             <p className="flex items-center gap-2 mt-2">
@@ -162,10 +208,9 @@ const Payment = () => {
 
         {/* Trade Summary */}
         <div className="bg-gray-800 border border-gray-700 p-6 rounded-xl mt-8 shadow-lg">
-          <div className="flex items-center gap-2 mb-3">
-            <FaBolt className="text-yellow-400" />
-            <h3 className="text-xl font-semibold">Trade Summary</h3>
-          </div>
+          <h3 className="text-xl font-semibold mb-2 flex items-center gap-2">
+            <FaBolt className="text-yellow-400" /> Trade Summary
+          </h3>
           <p>
             <strong>Energy:</strong> {trade.sellEnergyAmount} kWh
           </p>
@@ -175,7 +220,7 @@ const Payment = () => {
         </div>
       </div>
 
-      {/* RIGHT SIDE - Payment Form */}
+      {/* RIGHT SIDE - Payment */}
       <div className="flex-1 flex flex-col justify-center items-center p-8 md:p-12">
         <div className="w-full max-w-md bg-gray-900/70 backdrop-blur-lg border border-gray-700 rounded-2xl p-8 shadow-2xl">
           <h1 className="text-3xl font-bold mb-6 text-center text-green-400">
@@ -199,9 +244,9 @@ const Payment = () => {
             </select>
           </div>
 
-          {/* Phone Number */}
+          {/* Seller Number */}
           <div className="mb-6">
-            <label className=" mb-2 font-medium text-gray-300 flex items-center gap-2">
+            <label className="block mb-2 font-medium text-gray-300">
               Seller’s {paymentMethod} Number
             </label>
             <input
@@ -211,6 +256,8 @@ const Payment = () => {
               className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-gray-200"
             />
           </div>
+
+          {/* Buyer Number */}
           <div className="mb-6">
             <label className="block mb-2 font-medium text-gray-300">
               Buyer’s {paymentMethod} Number
@@ -219,12 +266,13 @@ const Payment = () => {
               type="text"
               value={buyerNumber}
               readOnly
-              className="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 text-gray-200"
+              className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-gray-200"
             />
           </div>
+
           {/* Confirm Button */}
           <button
-            onClick={handlePayment}
+            onClick={handleConfirmClick}
             disabled={loading}
             className={`w-full py-3 rounded-lg text-lg font-semibold transition-all ${
               loading
@@ -236,6 +284,52 @@ const Payment = () => {
           </button>
         </div>
       </div>
+
+      {/* OTP Modal */}
+      {showOtpModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-2xl w-full max-w-sm text-gray-800">
+            <h3 className="text-xl font-semibold text-center mb-2">
+              Enter OTP
+            </h3>
+            <p className="text-sm text-center mb-4 text-gray-500">
+              Expires in <b>{timeLeft}s</b>
+            </p>
+
+            {/* Progress line */}
+            <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+              <div
+                className="bg-green-500 h-2 rounded-full transition-all"
+                style={{ width: `${(timeLeft / 30) * 100}%` }}
+              ></div>
+            </div>
+
+            <input
+              type="text"
+              value={enteredOtp}
+              onChange={(e) => setEnteredOtp(e.target.value)}
+              maxLength="5"
+              placeholder="Enter OTP"
+              className="w-full p-3 border rounded-lg mb-4 text-center text-lg tracking-widest"
+            />
+
+            <div className="flex justify-between">
+              <button
+                onClick={() => setShowOtpModal(false)}
+                className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={verifyOtp}
+                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+              >
+                Verify
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
