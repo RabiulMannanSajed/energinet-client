@@ -24,8 +24,8 @@ const DeletedCourses = () => {
   };
 
   return (
-    <div className="">
-      <h1 className="text-xl font-bold mb-4 text-white">Deleted Courses</h1>
+    <div className="text-black">
+      <h1 className="text-xl font-bold mb-4 text-black">Deleted Courses</h1>
 
       {deletedCoursesFind?.length === 0 ? (
         <p className="text-gray-500">No deleted courses found.</p>
@@ -41,7 +41,7 @@ const DeletedCourses = () => {
           </thead>
           <tbody>
             {deletedCoursesFind.map((course) => (
-              <tr key={course._id} className="text-center text-white">
+              <tr key={course._id} className="text-center ">
                 <td className="p-2 border">
                   <img
                     src={course.coursesImage}

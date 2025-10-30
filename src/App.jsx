@@ -49,7 +49,7 @@ function App() {
           <Route index element={<AdminDashboard />} />
           <Route path="course" element={<CourseHome />} />
           <Route path="courseUpload" element={<CoursesUpload />} />
-          <Route path="deletedCourses" element={<DeletedCourses />} />
+          <Route path="courseUpload" element={<CoursesUpload />} />
           <Route path="userActivity" element={<UserActiveits />} />
           <Route path="adminTreads" element={<AdminTrades />} />
         </Route>
